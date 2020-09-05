@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <script type="text/javascript"
+            src="webjars/jquery/2.2.3/jquery.min.js"></script>
+    <script type="text/javascript"
+            src="webjars/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" th:src="@{/static/main.js}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+
+    <link rel="stylesheet"
+          href="webjars/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"/>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">cursor.education</a>
+</nav>
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="p-3 mb-2 bg-success text-white">
+            <h1 class="text-secondary">Notebook homework</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <thead>
+    <button class="btn btn-success nBtn">New</button>
+    <button class="btn btn-primary" th:onclick="|window.location.href='/sortByMemory'|">Sort by memory less 16 gb
+    </button>
+    <button class="btn btn-primary" th:onclick="|window.location.href='/getAllUsedNoteBooks'|">All second used notebook
+    </button>
+    <button class="btn btn-primary" th:onclick="|window.location.href='/sortByProducer'|">Desk sort by producer</button>
+    <div class="card">
+        <div class="card-block">
+            <table class="table table-hover ">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>model</th>
+                    <th>producer</th>
+                    <th>processor</th>
+                    <th>memory</th>
+                    <th>usedUnused</th>
+                    <th>typeBox</th>
+                    <th>price</th>
+                    <th>delete</th>
+                    <th>edit</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="notebook :${notebook}">
+                    <td th:text="${notebook.id}"></td>
+                    <td th:text="${notebook.model}"></td>
+                    <td th:text="${notebook.producer}"></td>
+                    <td th:text="${notebook.processor}"></td>
+                    <td th:text="${notebook.memory}"></td>
+                    <td th:text="${notebook.usedUnused}"></td>
+                    <td th:text="${notebook.typeBox}"></td>
+                    <td th:text="${notebook.price}"></td>
+                    <td><a th:href="@{delete/(id=${notebook.id})}" class="btn btn-danger delBtn">Delete</a></td>
+                    <td><a th:href="@{findOne/(id=${notebook.id})}" class="btn btn-primary eBtn">Edit</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <hr/>
+
+
+            <!-- <ul class="nav nav-pills">
+                 <li class="nav-item"
+                     th:each="i : ${#numbers.sequence(0,data.totalPages-1)}">
+                     <a th:href="@{/(page=${i})}" th:text="${i}" class="nav-link"
+                        th:classappend="${currentPage}==${i}?'active':''"></a>
+                 </li>
+             </ul>-->
+        </div>
+    </div>
+</div>
+<div class="myForm">
+    <form th:action="@{/save}" method="post">
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update or create</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="id" class="form-control-label">ID:</label>
+                            <input type="text" class="form-control" id="id" name="id" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="model" class="form-control-label">Model:</label>
+                            <input type="text" class="form-control" id="model" name="model" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="producer" class="form-control-label">Producer:</label>
+                            <input type="text" class="form-control" id="producer" name="producer" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="processor" class="form-control-label">Processor:</label>
+                            <input type="text" class="form-control" id="processor" name="processor" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="memory" class="form-control-label">Memory:</label>
+                            <input type="text" class="form-control" id="memory" name="memory" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="usedUnused" class="form-control-label">Used Unused:</label>
+                            <input type="text" class="form-control" id="usedUnused" name="usedUnused" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <label for="typeBox" class="form-control-label">typeBox:</label>
+                            <input type="text" class="form-control" id="typeBox" name="typeBox" value=""/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price" class="form-control-label">Price:</label>
+                            <input type="text" class="form-control" id="price" name="price" value=0.0/>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="save"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="alert alert-danger">
+                    Are you sure you want to delete this country?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="" class="btn btn-danger" id="delRef">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
